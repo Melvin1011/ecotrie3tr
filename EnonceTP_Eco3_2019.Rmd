@@ -595,3 +595,28 @@ allgreM$V121[allgreM$V121 >0] <- 1
 table(allgreM$V121)
 names(allgreM)[names(allgreM) == "V121"] <- "motorisation"
 ```
+
+```{r}
+summary(allgreM$taillemng)
+allgreM %>% ggplot() + geom_bar(aes(allgreM$taillemng))
+```
+50% des ménages sont composés d'au moins 2 personnes. En moyenne, il y a 2.239 personnes au sein d'un ménages. 
+
+
+```{r}
+library(tidyverse)
+summary(allgreM$Permis_mng)
+#On transforme la variable en binaire, considérant que 3 (conduite accompagnée est identique à 1, avoir le permis puisque si conduite accompagnée, il y a forcément au moins un individu qui a le permis au sein du ménage)
+allgreM$Permis_mng <- as.character(allgreM$Permis_mng)
+allgreM$Permis_mng <- fct_recode(allgreM$Permis_mng, "1" = "3")
+allgreM$Permis_mng <- as.numeric(allgreM$Permis_mng)
+
+count(allgreM, allgreM$Permis_mng)
+hist(allgreM$Permis_mng, xlim  = c(1,2))
+slices <- c(1979, 1063)
+piepercent<- round(100*slices/sum(slices), 1)
+lbls <- c("Permis", "Pas permis")
+pie(slices, labels = piepercent, main="Repartition des permis",col=c("#CCFFFF","#6699CC"))
+legend("bottomleft",title="Legende",c("permis", "sans permis"), fill = c("#CCFFFF","#6699CC"))
+```
+65.1% des ménages possède au moins 1 personne qui a le permis. 
